@@ -97,7 +97,7 @@ const Cart = () => {
               </div>
               <p>Taxes and shipping calculated at checkout</p>
               
-                <button >Check out</button>
+              <Link to="/checkout"> <button >Check out</button> </Link>
               
               
               <ContinueShop>

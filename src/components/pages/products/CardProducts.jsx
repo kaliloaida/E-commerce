@@ -14,11 +14,12 @@ export const CardProduct = ({ product }) => {
   
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const handleAddToCart = (product) => {
+  const handleAddToCart = (e) => {
+    e.preventDefault()
     dispatch(addToCart(product));
-    navigate.push("/cart");
+    // navigate.push("/cart");
   };
-  console.log(product);
+  // console.log(product);
   return (
     <>
       <GlobalStyle />
@@ -31,12 +32,15 @@ export const CardProduct = ({ product }) => {
           <h6 className="Category">{product.category}</h6>
           <div>
             <p className="Price">${product.price}</p>
+            <form>
             <img
               className="basket"
               src={basket}
               alt=""
-              onClick={() => handleAddToCart(product)}
+              onClick={handleAddToCart}
             />
+            </form>
+           
           </div>
         </TextCard>
       </Wrapper>

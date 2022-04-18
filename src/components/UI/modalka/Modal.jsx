@@ -7,14 +7,12 @@ const Div = styled.div`
   align-items: center;
   margin: 0 auto;
   position: fixed;
-  top: 5vh;
-  left: 20%;
+  top: 20vh;
+  left: 30%;
   width: 30%;
   z-index: 100;
   overflow: hidden;
-  padding: 20px;
-  
-
+  padding: 50px;
 `;
 const Button = styled.div`
   align-items: flex-end;
@@ -34,16 +32,16 @@ const BackdropModal = styled.div`
   background-color: rgba(0, 0, 0, 0.75);
 `;
 
-const Modal = ({ confirmNavigation, cancelNavigation }) => {
+const Modal = (props) => {
   return (
     <BackdropModal>
-    <Div>
-      <h1>Are sure leave this page? </h1>
-      <Button>
-      <button onClick={confirmNavigation}>Yes</button>
-      <button onClick={cancelNavigation}>Cancel</button>
-      </Button>
-    </Div>
+      <Div onClick={props.cancel}>
+        <h1>Are you sure leave this page? </h1>
+        <Button>
+          <button onClick={props.yes}>Yes</button>
+          <button onClick={props.cancel}>Cancel</button>
+        </Button>
+      </Div>
     </BackdropModal>
   );
 };

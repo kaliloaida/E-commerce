@@ -8,6 +8,9 @@ import useInput from "../../../hooks/useInput";
 import styled from "styled-components";
 import { createGlobalStyle } from "styled-components";
 import smartcard from "../../../assets/checkout/smartcard.jpg";
+import Modal from "../../UI/modalka/Modal";
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 export const GlobalStyle = createGlobalStyle`
   body{
@@ -20,11 +23,13 @@ export const GlobalStyle = createGlobalStyle`
 `;
 
 const Checkout = () => {
+  const navigate = useNavigate();
   const firstName = useInput(validNameRegex);
   const lastName = useInput(validNameRegex);
   const visaCard = useInput(visaCardRegex);
   const CVC = useInput(CVCRegex);
   const ExpirationDate = useInput(ExpirationDateRegex);
+  const [showModal, setShowModal] = useState(false);
 
   let formIsValid = false;
   formIsValid =
@@ -96,10 +101,23 @@ const Checkout = () => {
     visaCard.onClear();
     CVC.onClear();
     ExpirationDate.onClear();
+    setShowModal(true);
   };
-
+  const toggleSowHandler = () => {
+    return navigate("/Home");
+  };
+  const cancel = () => {
+    setShowModal(null);
+  };
   return (
     <>
+      {showModal && (
+        <Modal
+          onConfirm={toggleSowHandler}
+          cancel={cancel}
+          yes={toggleSowHandler}
+        />
+      )}
       <GlobalStyle />
       <Container>
         <form onSubmit={formSubmitHandler}>
@@ -216,7 +234,6 @@ const Container = styled.div`
   background: #b2e3af;
   padding: 30px;
   border-radius: 25px;
- 
 
   span {
     position: relative;

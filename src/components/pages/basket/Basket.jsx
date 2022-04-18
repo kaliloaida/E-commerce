@@ -97,7 +97,7 @@ const Cart = () => {
               
               
               <ContinueShop>
-                <Link to="/">
+                <Link to="/product">
                   <span>Continue Shopping</span>
                 </Link>
                 <span>OR</span>

@@ -4,7 +4,7 @@ import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
   addToCart,
-  // checkOut,
+ 
   clearCart,
   decreaseCart,
   getTotals,
@@ -16,7 +16,7 @@ import { Link, useNavigate } from "react-router-dom";
 const Cart = () => {
   const cart = useSelector((state) => state.cart);
   const dispatch = useDispatch();
-  // const navigate = useNavigate;
+  
 
   useEffect(() => {
     dispatch(getTotals());
@@ -34,10 +34,6 @@ const Cart = () => {
   const handleClearCart = () => {
     dispatch(clearCart());
   };
-  // const checkoutHandler = (product) => {
-  //   dispatch(checkOut(product));
-  //   return navigate("/Checkout");
-  // };
 
   return (
     <CartContainer>

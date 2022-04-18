@@ -1,20 +1,21 @@
 import {
   visaCardRegex,
   validNameRegex,
-  postalCodeRegex,
-  CVVRegex,
+  CVCRegex,
   ExpirationDateRegex,
 } from "../../../utils/helpers/regex";
 import useInput from "../../../hooks/useInput";
 import styled from "styled-components";
 import { createGlobalStyle } from "styled-components";
+import smartcard from "../../../assets/checkout/smartcard.jpg";
 
 export const GlobalStyle = createGlobalStyle`
   body{
-    background-image: url("https://abrakadabra.fun/uploads/posts/2021-12/1639968521_1-abrakadabra-fun-p-fon-dlya-prezentatsii-psikhologa-1.jpg") no-repeat top center;
-  width: 100%;
-  height: 100vh;
-  background-size: cover;
+    height: 100vh;
+ background-image: url(${smartcard});
+ background-size: 1500px;
+    background-position-x: center; 
+    background-position-y: center;
   }
 `;
 
@@ -22,8 +23,7 @@ const Checkout = () => {
   const firstName = useInput(validNameRegex);
   const lastName = useInput(validNameRegex);
   const visaCard = useInput(visaCardRegex);
-  const postalCode = useInput(postalCodeRegex);
-  const CVV = useInput(CVVRegex);
+  const CVC = useInput(CVCRegex);
   const ExpirationDate = useInput(ExpirationDateRegex);
 
   let formIsValid = false;
@@ -31,15 +31,14 @@ const Checkout = () => {
     firstName.inputValidRegex &&
     lastName.inputValidRegex &&
     visaCard.inputValidRegex &&
-    postalCode.inputValidRegex &&
-    CVV.inputValidRegex &&
+    CVC.inputValidRegex &&
     ExpirationDate.inputValidRegex;
   const error = {
     firstNameError: "",
     lastNameError: "",
     visaCardError: "",
-    postalCode: "",
-    CVV: "",
+
+    CVC: "",
     ExpirationDate: "",
   };
   if (firstName.nameInputIsValid) {
@@ -57,15 +56,11 @@ const Checkout = () => {
   } else if (visaCard.validateRejex) {
     error.visaCard = "visaCard number must not be empty";
   }
-  if (postalCode.nameInputIsValid) {
-    error.postalCode = "Enter your postalCode ";
-  } else if (postalCode.validateRejex) {
-    error.postalCode = "postalCode number must not be empty";
-  }
-  if (CVV.nameInputIsValid) {
-    error.CVV = "Enter your CVV ";
-  } else if (CVV.validateRejex) {
-    error.CVV = "CVV number must not be empty";
+
+  if (CVC.nameInputIsValid) {
+    error.CVC = "Enter your CVC ";
+  } else if (CVC.validateRejex) {
+    error.CVV = "CVC number must not be empty";
   }
   if (ExpirationDate.nameInputIsValid) {
     error.ExpirationDate = "Enter your ExpirationDate ";
@@ -84,12 +79,9 @@ const Checkout = () => {
     visaCard.nameInputIsValid || visaCard.validateRejex
       ? "form-control invalid"
       : "form-control";
-  let postalCardInputClasses =
-    postalCode.nameInputIsValid || postalCode.validateRejex
-      ? "form-control invalid"
-      : "form-control";
-  let CVVInputClasses =
-    CVV.nameInputIsValid || CVV.validateRejex
+
+  let CVCInputClasses =
+    CVC.nameInputIsValid || CVC.validateRejex
       ? "form-control invalid"
       : "form-control";
   let ExpirationDateInputClasses =
@@ -102,102 +94,133 @@ const Checkout = () => {
     firstName.onClear();
     lastName.onClear();
     visaCard.onClear();
-    postalCode.onClear();
-    CVV.onClear();
+    CVC.onClear();
     ExpirationDate.onClear();
   };
 
   return (
     <>
-    <GlobalStyle/>
-      <Form onSubmit={formSubmitHandler}>
-        <div className="control-group">
-          <div className={firstNameInputClasses}>
-            {console.log(firstName)}
-            <label htmlFor="Firstname">First Name</label>
-            <input
-              value={firstName.values}
-              type="text"
-              id="Firstname"
-              onBlur={firstName.onBlur}
-              onChange={firstName.onChange}
-            />
-            {error.firstName && <p>{error.firstName}</p>}
+      <GlobalStyle />
+      <Container>
+        <form onSubmit={formSubmitHandler}>
+          <div className="control-group">
+            <div className={firstNameInputClasses}>
+              {console.log(firstName)}
+              <span>
+                <label htmlFor="Firstname">First Name</label>
+                <input
+                  className="slide-up"
+                  value={firstName.values}
+                  type="text"
+                  id="Firstname"
+                  placeholder="First Name"
+                  onBlur={firstName.onBlur}
+                  onChange={firstName.onChange}
+                />
+                {error.firstName && <p>{error.firstName}</p>}
+              </span>
+            </div>
+
+            <div className={lastNameInputClasses}>
+              <span>
+                <label htmlFor="Lastname">Last Name</label>
+                <input
+                  placeholder="Last Name"
+                  className="slide-up"
+                  value={lastName.values}
+                  type="text"
+                  id="Lastname"
+                  onBlur={lastName.onBlur}
+                  onChange={lastName.onChange}
+                />
+                {error.lastName && <p>{error.lastName}</p>}
+              </span>
+            </div>
+          </div>
+          <div className={visaCardInputClasses}>
+            <span>
+              <label htmlFor="visaCard">Visa Card</label>
+              <input
+                className="slide-up"
+                value={visaCard.values}
+                type="text"
+                id="visaCard"
+                onBlur={visaCard.onBlur}
+                onChange={visaCard.onChange}
+                placeholder="0000 0000 0000 0000"
+              />
+              {error.visaCard && <p>{error.visaCard}</p>}
+            </span>
           </div>
 
-          <div className={lastNameInputClasses}>
-            <label htmlFor="Lastname">Last Name</label>
-            <input
-              value={lastName.values}
-              type="text"
-              id="Lastname"
-              onBlur={lastName.onBlur}
-              onChange={lastName.onChange}
-            />
-            {error.lastName && <p>{error.lastName}</p>}
+          <div className={CVCInputClasses}>
+            <span>
+              <label htmlFor="CVC">CVC</label>
+              <input
+                placeholder="000"
+                className="slide-up"
+                value={CVC.values}
+                type="text"
+                id="CVC"
+                onBlur={CVC.onBlur}
+                onChange={CVC.onChange}
+              />
+              {error.CVC && <p>{error.CVC}</p>}
+            </span>
           </div>
-        </div>
-        <div className={visaCardInputClasses}>
-          <label htmlFor="visaCard">Visa Card</label>
-          <input
-            value={visaCard.values}
-            type="text"
-            id="visaCard"
-            onBlur={visaCard.onBlur}
-            onChange={visaCard.onChange}
-          />
-          {error.postalCode && <p>{error.postalCode}</p>}
-        </div>
-        <div className={postalCardInputClasses}>
-          <label htmlFor="postalCode">Postal Code</label>
-          <input
-            value={postalCode.values}
-            type="text"
-            id="postalCode"
-            onBlur={postalCode.onBlur}
-            onChange={postalCode.onChange}
-          />
-          {error.postalCode && <p>{error.postalCode}</p>}
-        </div>
-        <div className={CVVInputClasses}>
-          <label htmlFor="CVV">CVV</label>
-          <input
-            value={CVV.values}
-            type="text"
-            id="CVV"
-            onBlur={CVV.onBlur}
-            onChange={CVV.onChange}
-          />
-          {error.CVV && <p>{error.CVV}</p>}
-        </div>
-        <div className={ExpirationDateInputClasses}>
-          <label htmlFor="ExpirationDate">Expiration Date</label>
-          <input
-            value={ExpirationDate.values}
-            type="text"
-            id="ExpirationDate"
-            onBlur={ExpirationDate.onBlur}
-            onChange={ExpirationDate.onChange}
-          />
-          {error.ExpirationDate && <p>{error.ExpirationDate}</p>}
-        </div>
-        <div className="form-actions">
-          <button disabled={!formIsValid}>Submit</button>
-        </div>
-      </Form>
+          <div className={ExpirationDateInputClasses}>
+            <span>
+              <label htmlFor="ExpirationDate">Expiration Date</label>
+              <input
+                placeholder="MM/YY"
+                className="slide-up"
+                value={ExpirationDate.values}
+                id="ExpirationDate"
+                onBlur={ExpirationDate.onBlur}
+                onChange={ExpirationDate.onChange}
+              />
+              {error.ExpirationDate && <p>{error.ExpirationDate}</p>}
+            </span>
+          </div>
+          <div className="form-actions">
+            <button disabled={!formIsValid}>Submit</button>
+          </div>
+        </form>
+      </Container>
     </>
   );
 };
 
 export default Checkout;
 
-const Form = styled.form`
-  top: 150px;
-  position: absolute;
+const Container = styled.div`
+  .invalid input {
+    border: 1px solid #b40e0e;
+    background-color: #fddddd;
+  }
 
-  background-color: red;
-  height: 250px;
-  display: flex;
-  align-items: center;
-  
+  .invalid input:focus {
+    border-color: #ff8800;
+    background-color: #fbe8d2;
+  }
+
+  .error-text {
+    color: #b40e0e;
+  }
+  position: absolute;
+  top: 50%;
+  left: 47%;
+  transform: translate(-50%, -50%);
+  max-width: 380px;
+  width: 100%;
+  background: #b2e3af;
+  padding: 30px;
+  border-radius: 25px;
+ 
+
+  span {
+    position: relative;
+    display: inline-block;
+    margin: 10px 10px 10px 10px;
+  }
 `;

@@ -1,11 +1,9 @@
-// import React from "react";
-import styled from "styled-components";
-import Carousel from "../../UI/carousel/Carousel";
-import yellowTulips from "../../../assets/others/yellowTulips.png";
-import redRose from "../../../assets/others/redRose.png";
-import rose from "../../../assets/others/rose.png";
-import blueCamomile from "../../../assets/others/blueCamomile.png";
-import { createGlobalStyle } from "styled-components";
+import styled, { createGlobalStyle } from 'styled-components'
+import Carousel from '../../UI/carousel/Carousel'
+import yellowTulips from '../../../assets/others/yellowTulips.png'
+import redRose from '../../../assets/others/redRose.png'
+import rose from '../../../assets/others/rose.png'
+import blueCamomile from '../../../assets/others/blueCamomile.png'
 
 export const GlobalStyle = createGlobalStyle`
 body{
@@ -16,34 +14,34 @@ body{
     background-size:cover;
     background-repeat:no-repeat;
 }
-`;
+`
 const Div = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  user-select: none;
-  && img {
-    padding: 20px;
-    width: 150px;
-    height: 150px;
-  }
-`;
+   display: flex;
+   justify-content: center;
+   align-items: center;
+   user-select: none;
+   && img {
+      padding: 20px;
+      width: 150px;
+      height: 150px;
+   }
+`
 
 const Home = () => {
-  return (
-    <>
-      <GlobalStyle />
+   return (
+      <>
+         <GlobalStyle />
 
-      <Div>
-        <Carousel>
-          <img src={rose} alt="" />
-          <img src={yellowTulips} alt="" />
-          <img src={redRose} alt="" />
-          <img src={blueCamomile} alt="" />
-        </Carousel>
-      </Div>
-    </>
-  );
-};
+         <Div>
+            <Carousel>
+               <img src={rose} alt="" />
+               <img src={yellowTulips} alt="" />
+               <img src={redRose} alt="" />
+               <img src={blueCamomile} alt="" />
+            </Carousel>
+         </Div>
+      </>
+   )
+}
 
-export default Home;
+export default Home

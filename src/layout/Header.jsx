@@ -2,9 +2,9 @@ import React from 'react'
 import { Link } from 'react-router-dom'
 import { useSelector } from 'react-redux'
 import styled from 'styled-components'
-import logo from '../../assets/logo/logo.png'
-import search from '../../assets/search/search.gif'
-import shoppingCart from '../../assets/basket/shoppingCart.gif'
+import logo from '../assets/logo/logo.png'
+import search from '../assets/search/search.gif'
+import shoppingCart from '../assets/basket/shoppingCart.gif'
 
 const Section = styled.section`
    width: 100%;
@@ -83,7 +83,11 @@ function Header() {
             <StyledLink to="service">Services</StyledLink>
 
             <Sidebar>
-               <img src={search} alt="" />
+               <span>
+                  <input type={search} />
+                  <img src={search} alt="" />
+               </span>
+
                <Link to="basket">
                   <Div>
                      <img src={shoppingCart} alt="" />

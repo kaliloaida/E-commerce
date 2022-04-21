@@ -1,45 +1,102 @@
-import styled, { createGlobalStyle } from 'styled-components'
-import Carousel from '../../UI/carousel/Carousel'
-import yellowTulips from '../../../assets/others/yellowTulips.png'
-import redRose from '../../../assets/others/redRose.png'
-import rose from '../../../assets/others/rose.png'
-import blueCamomile from '../../../assets/others/blueCamomile.png'
+import styled from 'styled-components'
+import clothes from '../../../assets/home/clothes.png'
+import NewTREND from '../../../assets/home/NewTREND.png'
+import COLLUSION from '../../../assets/home/COLLUSION.png'
+import trends from '../../../assets/home/trends.png'
+import DISCOVER from '../../../assets/home/DISCOVER.png'
+import Group from '../../../assets/home/Group.png'
+import GroupS from '../../../assets/home/GroupS.png'
+import Second from '../../../assets/home/Second.png'
+import Footer from '../../../layout/Footer'
 
-export const GlobalStyle = createGlobalStyle`
-body{
-    /* background-image: url('https://wallpapers-hub.art/wallpaper-images/497913.jpg'); */
-    /* background-image: url('https://image.shutterstock.com/image-illustration/pink-flower-wallpaper-mural-wall-260nw-1817094455.jpg'); */
-    background-image: url('https://i0.wp.com/zeeoii.com/wp-content/uploads/2020/07/Pink-Flower-HD-Wallpapers-43970-Baltana.jpg?fit=1024%2C576&ssl=1');
-    background-attachment: fixed;
-    background-size:cover;
-    background-repeat:no-repeat;
-}
-`
-const Div = styled.div`
-   display: flex;
-   justify-content: center;
-   align-items: center;
-   user-select: none;
-   && img {
-      padding: 20px;
-      width: 150px;
-      height: 150px;
+const Clothes = styled.div`
+   top: 60px;
+   position: absolute;
+   z-index: -5;
+   img {
+      width: 100%;
+      height: 100%;
    }
+`
+const TREND = styled.div`
+   position: absolute;
+   left: 800px;
+   top: 400px;
+   z-index: -5;
+`
+const Collusion = styled.div`
+   position: absolute;
+   left: 800px;
+   top: 440px;
+   z-index: -5;
+`
+const Trends = styled.div`
+   position: absolute;
+   left: 800px;
+   top: 510px;
+   z-index: -5;
+`
+const Discover = styled.div`
+   position: absolute;
+   left: 810px;
+   top: 550px;
+   padding: 5px;
+   background-color: black;
+   z-index: -5;
+`
+const Groups = styled.div`
+   position: absolute;
+   left: 1000px;
+   z-index: -5;
+   top: 550px;
+`
+const Seconds = styled.div`
+   position: absolute;
+   top: 690px;
+   z-index: -5;
+   && img {
+      width: 100%;
+      height: 100%;
+   }
+`
+const Grop = styled.div`
+   position: absolute;
+   width: 426px;
+   height: 182px;
+   left: 200px;
+   top: 1000px;
+   z-index: -5;
 `
 
 const Home = () => {
    return (
       <>
-         <GlobalStyle />
-
-         <Div>
-            <Carousel>
-               <img src={rose} alt="" />
-               <img src={yellowTulips} alt="" />
-               <img src={redRose} alt="" />
-               <img src={blueCamomile} alt="" />
-            </Carousel>
-         </Div>
+         <Clothes>
+            <img src={clothes} alt="" />
+         </Clothes>
+         <TREND>
+            <img src={NewTREND} alt="" />
+         </TREND>
+         <Collusion>
+            <img src={COLLUSION} alt="" />
+         </Collusion>
+         <Trends>
+            <img src={trends} alt="" />
+         </Trends>
+         <Discover>
+            <img src={DISCOVER} alt="" />
+         </Discover>
+         <Groups>
+            <img src={Group} alt="" />
+         </Groups>
+         <hr />
+         <Seconds>
+            <img src={Second} alt="" />
+         </Seconds>
+         <Grop>
+            <img src={GroupS} alt="" />
+         </Grop>
+         <Footer />
       </>
    )
 }

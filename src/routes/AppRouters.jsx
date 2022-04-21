@@ -1,6 +1,6 @@
 import React from 'react'
 import { Route, Routes, Navigate } from 'react-router-dom'
-import Headers from '../components/Layout/Header'
+import Headers from '../layout/Header'
 import Home from '../components/pages/home/Home'
 import { Products } from '../components/pages/products/Products'
 import Basket from '../components/pages/basket/Basket'

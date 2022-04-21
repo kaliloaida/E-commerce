@@ -1,20 +1,17 @@
 import React from 'react'
 import styled from 'styled-components'
 
-export const Pagination = ({ onPageChange }) => {
-   const pages = [1, 2, 3, 4]
+export const Pagination = ({ onPageChange, totalPosts, postsPerPage }) => {
+   const pageNumbers = []
 
-   const pageChangeHandler = (page) => {
-      onPageChange(page)
+   for (let i = 1; i <= Math.ceil(totalPosts / postsPerPage); i += 1) {
+      pageNumbers.push(i)
    }
 
    return (
       <Container>
-         {pages.map((page) => (
-            <PageItem
-               key={Math.random()}
-               onClick={() => pageChangeHandler(page)}
-            >
+         {pageNumbers.map((page) => (
+            <PageItem key={Math.random()} onClick={() => onPageChange(page)}>
                {page}
             </PageItem>
          ))}

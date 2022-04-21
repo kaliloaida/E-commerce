@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import styled from 'styled-components'
 import { useSearchParams } from 'react-router-dom'
@@ -9,20 +9,32 @@ import { Pagination } from '../pagination/Pagination'
 
 export const Products = () => {
    const dispatch = useDispatch()
-
    const [searchParams, setSearchParams] = useSearchParams()
+   const getCurrentPage = searchParams.get('page')
+
    const { products, isLoading } = useSelector((state) => state.product)
+   const [currentPage, setCurrentPage] = useState(getCurrentPage || 1)
+   const [productPerPage] = useState(4)
 
    useEffect(() => {
       dispatch(getAsyncProducts())
    }, [searchParams])
-   const pageChangeHandler = (selectedPage) => {
-      setSearchParams({ page: selectedPage })
-      dispatch(getAsyncProducts(selectedPage))
+
+   useEffect(() => {
+      setSearchParams({ page: currentPage })
+   }, [currentPage, setSearchParams])
+
+   const indexOfLastPost = currentPage * productPerPage
+   const indexOfFirstPost = indexOfLastPost - productPerPage
+   const currentPosts = products.slice(indexOfFirstPost, indexOfLastPost)
+
+   const changePageHandler = (pageNumber) => {
+      setCurrentPage(pageNumber)
+      setSearchParams({ page: pageNumber })
    }
 
    const renderProducts = () => {
-      return products.map((product) => {
+      return currentPosts.map((product) => {
          return <CardProduct key={Math.random()} product={product} />
       })
    }
@@ -30,7 +42,11 @@ export const Products = () => {
       <>
          <Cards>{isLoading ? <LoadingSpinner /> : renderProducts()}</Cards>
          <PaginationContainer>
-            <Pagination onPageChange={pageChangeHandler} />
+            <Pagination
+               onPageChange={changePageHandler}
+               totalPosts={products.length}
+               postsPerPage={productPerPage}
+            />
          </PaginationContainer>
       </>
    )

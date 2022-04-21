@@ -17,7 +17,6 @@ const AppRouters = () => {
             <Route path="product" element={<Products />} />
             <Route path="basket" element={<Basket />} />
             <Route path="checkout" element={<Checkout />} />
-            {/* <Route path="/product/:productId" element={<ProductDetails />} /> */}
          </Routes>
       </>
    )

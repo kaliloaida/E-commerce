@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 /* eslint-disable prefer-const */
 /* eslint-disable no-param-reassign */
 import { createSlice } from '@reduxjs/toolkit'
@@ -10,7 +11,6 @@ const initialState = {
       ? JSON.parse(localStorage.getItem('cartTotalQuantity'))
       : 0,
    cartTotalAmount: 0,
-   isCheckout: false,
 }
 
 const cartSlice = createSlice({
@@ -44,12 +44,6 @@ const cartSlice = createSlice({
 
          if (state.cartItems[itemIndex].cartQuantity > 1) {
             state.cartItems[itemIndex].cartQuantity -= 1
-         } else if (state.cartItems[itemIndex].cartQuantity === 1) {
-            const nextCartItems = state.cartItems.filter(
-               (item) => item.id !== action.payload.id
-            )
-
-            state.cartItems = nextCartItems
          }
 
          localStorage.setItem('cartItems', JSON.stringify(state.cartItems))
@@ -83,16 +77,19 @@ const cartSlice = createSlice({
                quantity: 0,
             }
          )
-         total = parseFloat(total.toFixed(2))
+         total = parseFloat(total)
          state.cartTotalQuantity = quantity
-         state.cartTotalAmount = total
+         if (total > 1000) {
+            const discount = total - (total * 15) / 100
+            state.discount = (total * 15) / 100
+            state.cartTotalAmount = discount
+         } else {
+            state.cartTotalAmount = total
+         }
       },
       clearCart(state) {
          state.cartItems = []
          localStorage.setItem('cartItems', JSON.stringify(state.cartItems))
-      },
-      checkOut(state) {
-         state.isCheckout = true
       },
    },
 })
@@ -103,7 +100,7 @@ export const {
    removeFromCart,
    getTotals,
    clearCart,
-   checkOut,
+   showDiscount,
 } = cartSlice.actions
 
 export default cartSlice.reducer

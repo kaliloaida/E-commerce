@@ -8,6 +8,7 @@ export const getAsyncProducts = createAsyncThunk(
          return await appFetch({
             path: 'products',
             method: 'GET',
+            params: { limit: 20 },
          })
       } catch (error) {
          return error.message

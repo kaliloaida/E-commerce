@@ -103,7 +103,17 @@ const Cart = () => {
                   <CartCheckout>
                      <div className="subtotal">
                         <span>Subtotal</span>
-                        <span className="amount">${cart.cartTotalAmount}</span>
+                        <span className="amount">
+                           ${cart.cartTotalAmount.toFixed(2)}
+                        </span>
+                        <br />
+
+                        {cart.cartTotalAmount > 1000 && (
+                           <p>
+                              Discount: $
+                              {cart.discount && cart.discount.toFixed(2)}
+                           </p>
+                        )}
                      </div>
                      <p>Taxes and shipping calculated at checkout</p>
 

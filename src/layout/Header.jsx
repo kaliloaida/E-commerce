@@ -2,7 +2,6 @@ import React from 'react'
 import { Link } from 'react-router-dom'
 import { useSelector } from 'react-redux'
 import styled from 'styled-components'
-import logo from '../assets/logo/logo.png'
 import search from '../assets/search/search.gif'
 import shoppingCart from '../assets/basket/shoppingCart.gif'
 
@@ -25,11 +24,7 @@ const Logos = styled.div`
       color: #e40045;
    }
 `
-const Logo = styled.img`
-   width: 50px;
-   height: 50px;
-   margin-left: 20px;
-`
+
 const Sidebar = styled.div`
    align-items: center;
    display: flex;
@@ -74,8 +69,7 @@ function Header() {
       <nav>
          <Section>
             <Logos>
-               <Logo src={logo} alt="" />
-               <h3>Flower.Shop</h3>
+               <h3>YOUR LOGO</h3>
             </Logos>
 
             <StyledLink to="/">Home</StyledLink>

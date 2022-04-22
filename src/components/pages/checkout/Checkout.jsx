@@ -106,17 +106,11 @@ const Checkout = () => {
    const toggleSowHandler = () => {
       return navigate('/Home')
    }
-   const cancel = () => {
-      setShowModal(null)
-   }
+
    return (
       <>
          {showModal && (
-            <Modal
-               onConfirm={toggleSowHandler}
-               cancel={cancel}
-               yes={toggleSowHandler}
-            />
+            <Modal onConfirm={toggleSowHandler} yes={toggleSowHandler} />
          )}
          <GlobalStyle />
          <Container>
@@ -158,9 +152,10 @@ const Checkout = () => {
                   <span>
                      <label htmlFor="visaCard">Visa Card</label>
                      <input
+                        maxLength="16"
                         className="slide-up"
                         value={visaCard.values}
-                        type="text"
+                        type="number"
                         id="visaCard"
                         onBlur={visaCard.onBlur}
                         onChange={visaCard.onChange}
@@ -177,7 +172,7 @@ const Checkout = () => {
                         placeholder="000"
                         className="slide-up"
                         value={CVC.values}
-                        type="text"
+                        type="number"
                         id="CVC"
                         onBlur={CVC.onBlur}
                         onChange={CVC.onChange}

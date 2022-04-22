@@ -16,11 +16,11 @@ const Div = styled.div`
    padding: 50px;
 `
 const Button = styled.div`
-   align-items: flex-end;
+   align-items: center;
    display: flex;
-   justify-content: space-around;
+   justify-content: center;
    width: 200px;
-   margin: 20px 10px 20px 200px;
+   margin: 20px 10px 20px 100px;
    color: blueviolet;
 `
 const BackdropModal = styled.div`
@@ -36,14 +36,11 @@ const BackdropModal = styled.div`
 const Modal = (props) => {
    return (
       <BackdropModal>
-         <Div onClick={props.cancel}>
-            <h1>Are you sure leave this page? </h1>
+         <Div>
+            <h1>Your purchase was successfully processed!</h1>
             <Button>
                <button type="button" onClick={props.yes}>
-                  Yes
-               </button>
-               <button type="button" onClick={props.cancel}>
-                  Cancel
+                  OK
                </button>
             </Button>
          </Div>

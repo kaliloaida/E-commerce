@@ -1,7 +1,6 @@
 import { useDispatch } from 'react-redux'
 import styled, { createGlobalStyle } from 'styled-components'
 import { useState } from 'react'
-import InputMask from 'react-input-mask'
 import { useNavigate } from 'react-router-dom'
 import {
    visaCardRegex,
@@ -161,35 +160,14 @@ const Checkout = () => {
                   </div>
                   <Inputs className={visaCardInputClasses}>
                      <label htmlFor="visaCard">Visa Card</label>
-                     <InputMask
-                        mask={
-                           (/[1-9]/,
-                           /\d/,
-                           /\d/,
-                           /\d/,
-                           ' ',
-                           /\d/,
-                           /\d/,
-                           /\d/,
-                           /\d/,
-                           ' ',
-                           /\d/,
-                           /\d/,
-                           /\d/,
-                           /\d/,
-                           ' ',
-                           /\d/,
-                           /\d/,
-                           /\d/,
-                           /\d/)
-                        }
+                     <input
                         className="slide-up"
                         value={visaCard.values}
                         maxLength="16"
                         id="visaCard"
                         type="number"
                         onBlur={visaCard.onBlur}
-                        onChange={visaCard.onChange}
+                        onChange={visaCard.onVisaCardChangeHandler}
                         placeholder="0000 0000 0000 0000"
                      />
                      {error && error.visaCard && error.visaCard.length > 1 && (
@@ -200,16 +178,15 @@ const Checkout = () => {
                   <Inputs className={securityCodeInputClasses}>
                      <label htmlFor="CVC">CVC</label>
 
-                     <InputMask
-                        mask={(/[0-9]/, /\d/, /\d/, /\d/)}
-                        placeholder="000"
+                     <input
                         className="slide-up"
+                        type="number"
+                        placeholder="000"
                         value={securityCode.values}
                         id="CVC"
                         maxLength="3"
                         onBlur={securityCode.onBlur}
-                        onChange={securityCode.onChange}
-                        type="number"
+                        onChange={securityCode.onCVCChangeHandler}
                      />
 
                      {error &&
@@ -220,15 +197,14 @@ const Checkout = () => {
                   </Inputs>
                   <Inputs className={ExpirationDateInputClasses}>
                      <label htmlFor="ExpirationDate">Expiration Date</label>
-                     <InputMask
-                        mask={(/[0-9]/, /\d/, '/', /\d/, /\d/)}
+                     <input
                         maxLength="7"
-                        placeholder="MM/YY"
+                        placeholder="MM/YYYY"
                         className="slide-up"
                         value={ExpirationDate.values}
                         id="ExpirationDate"
                         onBlur={ExpirationDate.onBlur}
-                        onChange={ExpirationDate.onChange}
+                        onChange={ExpirationDate.onExpiryInputChangeHandler}
                      />
                      {error &&
                         error.ExpirationDate &&

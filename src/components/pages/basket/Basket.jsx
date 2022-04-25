@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import styled from 'styled-components'
+import styled, { createGlobalStyle } from 'styled-components'
 import { Link } from 'react-router-dom'
 import {
    addToCart,
@@ -9,7 +9,13 @@ import {
    getTotals,
    removeFromCart,
 } from '../../../store/cartSlice'
+import Card from '../../UI/card/Card'
 
+export const GlobalStyle = createGlobalStyle`
+  body{
+   background-color:#FFFF5A;
+  }
+`
 const Cart = () => {
    const cart = useSelector((state) => state.cart)
    const dispatch = useDispatch()
@@ -32,113 +38,121 @@ const Cart = () => {
    }
 
    return (
-      <CartContainer>
-         <h2>Shopping Cart</h2>
-         {cart.cartItems.length === 0 ? (
-            <CartEmpty>
-               <p>Your cart is currently empty</p>
-               <div className="start-shopping">
-                  <Link to="/">
-                     <span>Start Shopping</span>
-                  </Link>
-               </div>
-            </CartEmpty>
-         ) : (
-            <div>
-               <Title>
-                  <h3 className="product-title">Product</h3>
-                  <div>
-                     <h3 className="price">Price</h3>
-                     <h3 className="quantity">Quantity</h3>
-                     <h3 className="total">Total</h3>
-                  </div>
-               </Title>
-               <div className="cart-items">
-                  {cart.cartItems &&
-                     cart.cartItems.map((cartItem) => (
-                        <CartItem key={cartItem.id}>
-                           <div className="cart-product">
-                              <img src={cartItem.image} alt={cartItem.name} />
-                              <div>
-                                 <h3>{cartItem.name}</h3>
-                                 <p>{cartItem.desc}</p>
-                                 <button
-                                    type="button"
-                                    onClick={() =>
-                                       handleRemoveFromCart(cartItem)
-                                    }
-                                 >
-                                    Remove
-                                 </button>
-                              </div>
-                           </div>
-                           <div className="cart-product-price">
-                              ${cartItem.price}
-                           </div>
-                           <div className="cart-product-quantity">
-                              <button
-                                 type="button"
-                                 onClick={() => handleDecreaseCart(cartItem)}
-                              >
-                                 -
-                              </button>
-
-                              <div className="count">
-                                 {cartItem.cartQuantity}
-                              </div>
-                              <button
-                                 onClick={() => handleAddToCart(cartItem)}
-                                 type="button"
-                              >
-                                 +
-                              </button>
-                           </div>
-                           <div className="cart-product-total-price">
-                              ${cartItem.price * cartItem.cartQuantity}
-                           </div>
-                        </CartItem>
-                     ))}
-               </div>
-               <CartSummary>
-                  <CartCheckout>
-                     <div className="subtotal">
-                        <span>Subtotal</span>
-                        <span className="amount">
-                           ${cart.cartTotalAmount.toFixed(2)}
-                        </span>
-                        <br />
-
-                        {cart.cartTotalAmount > 1000 && (
-                           <p>
-                              Discount: $
-                              {cart.discount && cart.discount.toFixed(2)}
-                           </p>
-                        )}
-                     </div>
-                     <p>Taxes and shipping calculated at checkout</p>
-
-                     <Link to="/checkout">
-                        <button type="button">Check out</button>
-                     </Link>
-
-                     <ContinueShop>
-                        <Link to="/product">
-                           <span>Continue Shopping</span>
+      <>
+         <GlobalStyle />
+         <Card>
+            <CartContainer>
+               <h2>Shopping Cart</h2>
+               {cart.cartItems.length === 0 ? (
+                  <CartEmpty>
+                     <p>Your cart is currently empty</p>
+                     <div className="start-shopping">
+                        <Link to="/">
+                           <span>Start Shopping</span>
                         </Link>
-                        <span>OR</span>
-                        <button
-                           type="button"
-                           className="clear-btn"
-                           onClick={() => handleClearCart()}
-                        >
-                           Clear Cart
-                        </button>
-                     </ContinueShop>
-                  </CartCheckout>
-               </CartSummary>
-            </div>
-         )}
-      </CartContainer>
+                     </div>
+                  </CartEmpty>
+               ) : (
+                  <div>
+                     <Title>
+                        <h3 className="product-title">Product</h3>
+                        <h3 className="price">Price</h3>
+                        <h3 className="quantity">Quantity</h3>
+                        <h3 className="total">Total</h3>
+                     </Title>
+                     <div className="cart-items">
+                        {cart.cartItems &&
+                           cart.cartItems.map((cartItem) => (
+                              <CartItem key={cartItem.id}>
+                                 <div className="cart-product">
+                                    <img
+                                       src={cartItem.image}
+                                       alt={cartItem.name}
+                                    />
+                                    <div>
+                                       <h3>{cartItem.name}</h3>
+                                       <p>{cartItem.desc}</p>
+                                       <button
+                                          type="button"
+                                          onClick={() =>
+                                             handleRemoveFromCart(cartItem)
+                                          }
+                                       >
+                                          Remove
+                                       </button>
+                                    </div>
+                                 </div>
+                                 <div className="cart-product-price">
+                                    ${cartItem.price}
+                                 </div>
+                                 <div className="cart-product-quantity">
+                                    <button
+                                       type="button"
+                                       onClick={() =>
+                                          handleDecreaseCart(cartItem)
+                                       }
+                                    >
+                                       -
+                                    </button>
+
+                                    <div className="count">
+                                       {cartItem.cartQuantity}
+                                    </div>
+                                    <button
+                                       onClick={() => handleAddToCart(cartItem)}
+                                       type="button"
+                                    >
+                                       +
+                                    </button>
+                                 </div>
+                                 <div className="cart-product-total-price">
+                                    ${cartItem.price * cartItem.cartQuantity}
+                                 </div>
+                              </CartItem>
+                           ))}
+                     </div>
+                     <CartSummary>
+                        <CartCheckout>
+                           <div className="subtotal">
+                              <span>Subtotal</span>
+                              <span className="amount">
+                                 ${cart.cartTotalAmount.toFixed(2)}
+                              </span>
+                              <br />
+
+                              {cart.cartTotalAmount > 1000 && (
+                                 <p className="discount">
+                                    Discount: $
+                                    {cart.discount && cart.discount.toFixed(2)}
+                                 </p>
+                              )}
+                           </div>
+                           <p>Taxes and shipping calculated at checkout</p>
+
+                           <Link to="/checkout">
+                              <button type="button">Check out</button>
+                           </Link>
+
+                           <ContinueShop>
+                              <Link to="/product">
+                                 <span>Continue Shopping</span>
+                              </Link>
+                              <span>OR</span>
+                              <button
+                                 type="button"
+                                 className="clear-btn"
+                                 onClick={() => handleClearCart()}
+                              >
+                                 Clear Cart
+                              </button>
+                           </ContinueShop>
+                        </CartCheckout>
+                     </CartSummary>
+                  </div>
+               )}
+            </CartContainer>
+         </Card>
+      </>
    )
 }
 
@@ -159,26 +173,22 @@ const Title = styled.div`
    color: #64e279;
    display: flex;
    flex-direction: row;
+   display: grid;
+   grid-template-columns: 1fr 2.8fr 1fr 3fr;
+   column-gap: 0.1rem;
+   padding: 20px;
    && h3 {
       font-size: 14px;
       font-weight: 400;
       text-transform: uppercase;
-      display: grid;
       align-items: center;
-      grid-template-columns: 5fr 2fr 1fr 1fr;
-      column-gap: 3rem;
-   }
-   && div {
-      padding-left: 400px;
-      display: flex;
-      flex-direction: row;
    }
 `
 
 const CartItem = styled.div`
    display: grid;
    align-items: center;
-   grid-template-columns: 3fr 1fr 1fr 1fr;
+   grid-template-columns: 1fr 3fr 1fr 3fr;
    column-gap: 0.1rem;
    border-top: 1px solid rgb(187, 187, 187);
    padding: 1rem 0;
@@ -187,8 +197,8 @@ const CartItem = styled.div`
       padding-left: 1rem;
    }
    .total {
-      padding-right: 1rem;
-      justify-self: right;
+      /* padding-right: 1rem; */
+      /* justify-self:; */
    }
    .cart-product {
       display: flex;
@@ -234,8 +244,8 @@ const CartItem = styled.div`
       padding: 0.7rem 0;
    }
    .cart-product-total-price {
-      padding-right: 0.5rem;
-      justify-self: right;
+      /* padding-right: 0.5rem; */
+      /* justify-self: right; */
       font-weight: 700;
    }
 `
@@ -250,8 +260,9 @@ const CartSummary = styled.div`
    font-weight: 400;
    letter-spacing: 1.15px;
    border: 0.5px solid rgb(177, 177, 177);
-   color: gray;
+   color: #50053d;
    background: none;
+   font-size: 20px;
    outline: none;
    cursor: pointer;
 `
@@ -259,23 +270,19 @@ const CartCheckout = styled.div`
    margin-bottom: 100px;
    background-color: #c7ff00;
    width: 500px;
-   .subtotal {
+   && div {
       padding: 20px;
-      padding-left: 150px;
-      display: flex;
-      text-align: center;
-      /* justify-content: space-between; */
       font-size: 20px;
+      grid-template-columns: 1fr 2.8fr 1fr 1fr;
+      column-gap: 2rem;
+      padding: 20px;
    }
-   .amount {
-      font-weight: 700;
-      padding-left: 10px;
-   }
-   p {
+   && p {
       font-size: 14px;
       font-weight: 200;
       margin: 0.5rem 0;
    }
+
    button {
       width: 50%;
       height: 40px;

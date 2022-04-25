@@ -1,96 +1,91 @@
-import React from 'react'
-import { Link } from 'react-router-dom'
+import React, { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
-import styled from 'styled-components'
-import search from '../assets/search/search.gif'
+import { FaBars, FaTimes } from 'react-icons/fa'
+import { IconContext } from 'react-icons/lib'
 import shoppingCart from '../assets/basket/shoppingCart.gif'
+import {
+   Nav,
+   NavbarContainer,
+   NavLogo,
+   NavIcon,
+   MobileIcon,
+   NavMenu,
+   NavItem,
+   NavItemBtn,
+   NavLink,
+   NavBtnLink,
+} from './styles/HeaderNavbarStyle'
+import { Button } from './styles/GlobalStyles'
 
-const Section = styled.section`
-   width: 100%;
-   height: 70px;
-   position: fixed;
-   display: flex;
-   justify-content: space-between;
-   align-items: center;
-
-   background-color: #baf46e;
-`
-const Logos = styled.div`
-   display: flex;
-   justify-content: space-between;
-   && h3 {
-      padding-top: 10px;
-      font-family: 'Playfair Display', serif;
-      color: #e40045;
-   }
-`
-
-const Sidebar = styled.div`
-   align-items: center;
-   display: flex;
-   justify-content: space-between;
-   && img {
-      width: 40px;
-      height: 40px;
-      margin: 10px 30px 10px 10px;
-   }
-`
-
-const StyledLink = styled(Link)`
-   font-family: 'Josefin Sans', sans-serif;
-   font-family: 'Lobster', cursive;
-   font-family: 'Playfair Display', serif;
-   width: 100px;
-   font-size: 20px;
-   color: #268600;
-`
-const Div = styled.div`
-   align-items: center;
-   display: flex;
-   justify-content: space-around;
-   && span {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      height: 25px;
-      width: 25px;
-      border-radius: 50%;
-      background: yellow;
-      font-size: 14px;
-      font-weight: 700;
-      color: black;
-      margin-right: 20px;
-   }
-`
 function Header() {
+   const [click, setClick] = useState(false)
+   const [button, setButton] = useState(true)
+
+   const handleClick = () => setClick(!click)
+   const closeMobileMenu = () => setClick(false)
+
+   const showButton = () => {
+      if (window.innerWidth <= 960) {
+         setButton(false)
+      } else {
+         setButton(true)
+      }
+   }
+
+   useEffect(() => {
+      showButton()
+   }, [])
    const { cartTotalQuantity } = useSelector((state) => state.cart)
 
    return (
-      <nav>
-         <Section>
-            <Logos>
-               <h3>YOUR LOGO</h3>
-            </Logos>
-
-            <StyledLink to="/">Home</StyledLink>
-            <StyledLink to="product">Products</StyledLink>
-            <StyledLink to="service">Services</StyledLink>
-
-            <Sidebar>
-               <span>
-                  <input type={search} />
-                  <img src={search} alt="" />
-               </span>
-
-               <Link to="basket">
-                  <Div>
-                     <img src={shoppingCart} alt="" />
-                     <span>{cartTotalQuantity}</span>
-                  </Div>
-               </Link>
-            </Sidebar>
-         </Section>
-      </nav>
+      // eslint-disable-next-line react/jsx-no-constructed-context-values
+      <IconContext.Provider value={{ color: '#fff' }}>
+         <Nav>
+            <NavbarContainer>
+               <NavLogo to="/" onClick={closeMobileMenu}>
+                  <NavIcon />
+                  YOUR LOGO
+               </NavLogo>
+               <MobileIcon onClick={handleClick}>
+                  {click ? <FaTimes /> : <FaBars />}
+               </MobileIcon>
+               <NavMenu onClick={handleClick} click={click}>
+                  <NavItem>
+                     <NavLink to="/" onClick={closeMobileMenu}>
+                        Home
+                     </NavLink>
+                  </NavItem>
+                  <NavItem>
+                     <NavLink to="/product" onClick={closeMobileMenu}>
+                        Products
+                     </NavLink>
+                  </NavItem>
+                  <NavItem>
+                     <NavLink to="/service" onClick={closeMobileMenu}>
+                        Services
+                     </NavLink>
+                  </NavItem>
+                  <NavItemBtn>
+                     {button ? (
+                        <NavBtnLink to="basket">
+                           <Button primary>
+                              <img src={shoppingCart} alt="" />
+                              <span>{cartTotalQuantity}</span>
+                           </Button>
+                        </NavBtnLink>
+                     ) : (
+                        <NavBtnLink to="basket">
+                           <Button onClick={closeMobileMenu} fontBig primary>
+                              <img src={shoppingCart} alt="" />
+                              <span>{cartTotalQuantity}</span>
+                           </Button>
+                        </NavBtnLink>
+                     )}
+                  </NavItemBtn>
+               </NavMenu>
+            </NavbarContainer>
+         </Nav>
+      </IconContext.Provider>
    )
 }
 

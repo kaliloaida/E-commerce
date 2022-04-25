@@ -1,7 +1,7 @@
 import React from 'react'
 import styled, { createGlobalStyle } from 'styled-components'
 import { useDispatch } from 'react-redux'
-import basket from '../../../assets/basket/basket.png'
+// import basket from '../../../assets/basket/basket.png'
 import { addToCart } from '../../../store/cartSlice'
 
 export const GlobalStyle = createGlobalStyle`
@@ -20,21 +20,21 @@ export const CardProduct = ({ product }) => {
       <>
          <GlobalStyle />
          <Wrapper key={product.id}>
-            <CoverImg>
-               <img src={product.image} alt="" />
-            </CoverImg>
-            <TextCard>
-               <h6 className="title">{product.title}</h6>
-               <h6 className="Category">{product.category}</h6>
-               <div>
-                  <p className="Price">${product.price}</p>
-                  <form>
-                     <button onClick={handleAddToCart} type="button">
-                        <img className="basket" src={basket} alt="#" />
-                     </button>
-                  </form>
-               </div>
-            </TextCard>
+            <Container>
+               <CardInfo>
+                  <CoverImg>
+                     <img src={product.image} alt="" />
+                  </CoverImg>
+                  <TextCard>
+                     <h6 className="title">{product.title}</h6>
+                     <h6 className="Category">{product.category}</h6>
+                     <h4 className="Price">${product.price}</h4>
+                     <Button onClick={handleAddToCart} type="button">
+                        <h3> BUY</h3>
+                     </Button>
+                  </TextCard>
+               </CardInfo>
+            </Container>
          </Wrapper>
       </>
    )
@@ -42,15 +42,48 @@ export const CardProduct = ({ product }) => {
 
 const Wrapper = styled.div`
    display: flex;
-   align-items: center;
-   justify-content: space-around;
    flex-direction: column;
-   margin: 10px 10px 20px 10px;
+   align-items: center;
+   margin: 0 auto;
+   @media screen and (max-width: 960px) {
+      margin: 0 30px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+   }
+`
+const Container = styled.div`
+   background: #4b965c;
+   box-shadow: 0 6px 20px rgba(56, 125, 255, 0.2);
+   width: 280px;
+   height: 500px;
+   text-decoration: none;
+   border-radius: 4px;
+   &:nth-child(2) {
+      margin: 24px;
+   }
+   &:hover {
+      transform: scale(1.06);
+      transition: all 0.3s ease-out;
+      color: #1c2237;
+   }
+   @media screen and (max-width: 960px) {
+      width: 90%;
+      &:hover {
+         transform: none;
+      }
+   }
+`
+const CardInfo = styled.div`
+   display: flex;
+   flex-direction: column;
+   height: 500px;
+   padding: 24px;
+   align-items: center;
+   color: #fff;
 `
 const CoverImg = styled.div`
-   width: 250px;
-   height: 300px;
-   overflow-clip-margin: initial;
+   margin: 24px 0;
    img {
       width: 260px;
       height: 280px;
@@ -58,47 +91,39 @@ const CoverImg = styled.div`
       transition: transform 3s;
    }
    &:hover img {
-      transform: scale(0.5);
+      transform: scale(1.06);
+      transition: all 0.3s ease-out;
+      color: #1c2237;
    }
 `
 const TextCard = styled.div`
-   display: flex;
-   justify-content: space-around;
-   flex-direction: column;
-   text-align: center;
-
-   && div {
-      width: 130px;
-      display: flex;
-      align-items: center;
-      flex-direction: row;
-      justify-content: space-between;
-      margin: 0 auto;
+   font-size: 14px;
+   margin-bottom: 24px;
+   && h4 {
+      font-size: 40px;
    }
-
-   .basket {
-      width: 50px;
-      height: 50px;
+   && button {
+      width: 30px;
+      margin: 5px auto;
    }
-   .title {
-      font-family: 'Anek Odia', sans-serif;
-      font-family: 'Dancing Script', cursive;
-      color: #120452;
+`
+const Button = styled.button`
+   border-radius: 4px;
+   width: 200px;
+   background: ${({ primary }) => (primary ? '#4B59F7' : '#000711')};
+   white-space: nowrap;
+   padding: ${({ big }) => (big ? '12px 50px' : '10px 50px 10px 20px')};
+   color: #8feef1;
+   font-size: ${({ fontBig }) => (fontBig ? '20px' : '16px')};
+   outline: none;
+   border: none;
+   cursor: pointer;
+   &:hover {
+      transition: all 0.3s ease-out;
+      background: #fff;
+      background-color: ${({ primary }) => (primary ? '#5f014b' : '#01662f')};
    }
-   .Category {
-      font-family: 'Anek Odia', sans-serif;
-      font-family: 'Dancing Script', cursive;
-      color: #120452;
-      font-weight: 200;
-   }
-   .Price {
-      font-family: 'Anek Odia', sans-serif;
-      font-family: 'Dancing Script', cursive;
-      font-family: 'Rubik', sans-serif;
-      background-color: #b4f1f1;
-      padding: 5px;
-      font-size: 25px;
-      border: 1px solid yellowgreen;
-      box-shadow: 1px 1px 2px #36d792;
+   @media screen and (max-width: 960px) {
+      width: 100%;
    }
 `

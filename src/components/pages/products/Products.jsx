@@ -52,12 +52,17 @@ export const Products = () => {
    )
 }
 const Cards = styled.div`
-   width: 1200px;
-   margin: 0 auto;
-   padding-top: 100px;
-   display: grid;
-   grid-template-columns: repeat(4, 1fr);
-   grid-template-rows: repeat(3, 1fr);
+   display: flex;
+   flex-direction: row;
+   justify-content: center;
+   align-items: center;
+   margin: 50px auto;
+   @media screen and (max-width: 960px) {
+      margin: 0 30px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+   }
 `
 const PaginationContainer = styled.div`
    display: flex;

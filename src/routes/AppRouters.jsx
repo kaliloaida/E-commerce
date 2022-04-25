@@ -5,6 +5,7 @@ import Home from '../components/pages/home/Home'
 import { Products } from '../components/pages/products/Products'
 import Basket from '../components/pages/basket/Basket'
 import Checkout from '../components/pages/checkout/Checkout'
+import Services from '../components/pages/service/Services'
 
 const AppRouters = () => {
    return (
@@ -17,6 +18,7 @@ const AppRouters = () => {
             <Route path="product" element={<Products />} />
             <Route path="basket" element={<Basket />} />
             <Route path="checkout" element={<Checkout />} />
+            <Route path="service" element={<Services />} />
          </Routes>
       </>
    )

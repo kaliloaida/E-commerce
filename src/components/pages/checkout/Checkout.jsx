@@ -1,5 +1,7 @@
+import { useDispatch } from 'react-redux'
 import styled, { createGlobalStyle } from 'styled-components'
 import { useState } from 'react'
+import InputMask from 'react-input-mask'
 import { useNavigate } from 'react-router-dom'
 import {
    visaCardRegex,
@@ -8,9 +10,9 @@ import {
    ExpirationDateRegex,
 } from '../../../utils/helpers/regex'
 import useInput from '../../../hooks/useInput'
-
 import smartcard from '../../../assets/checkout/smartcard.jpg'
 import Modal from '../../UI/modalka/Modal'
+import { clearCart } from '../../../store/cartSlice'
 
 export const GlobalStyle = createGlobalStyle`
   body{
@@ -23,11 +25,12 @@ export const GlobalStyle = createGlobalStyle`
 `
 
 const Checkout = () => {
+   const dispatch = useDispatch()
    const navigate = useNavigate()
    const firstName = useInput(validNameRegex)
    const lastName = useInput(validNameRegex)
    const visaCard = useInput(visaCardRegex)
-   const CVC = useInput(CVCRegex)
+   const securityCode = useInput(CVCRegex)
    const ExpirationDate = useInput(ExpirationDateRegex)
    const [showModal, setShowModal] = useState(false)
 
@@ -36,25 +39,33 @@ const Checkout = () => {
       firstName.inputValidRegex &&
       lastName.inputValidRegex &&
       visaCard.inputValidRegex &&
-      CVC.inputValidRegex &&
+      securityCode.inputValidRegex &&
       ExpirationDate.inputValidRegex
    const error = {
       firstNameError: '',
       lastNameError: '',
       visaCardError: '',
-
-      CVC: '',
+      securityCode: '',
       ExpirationDate: '',
    }
+   const inputMonth = new Date().getMonth().toString()
+   const inputYear = new Date().getFullYear().toString()
+
+   const date = ExpirationDate.values.split('/')
+
+   if (Number(date[0]) < +inputMonth + 1 || date[1] < inputYear) {
+      error.ExpirationDate = ExpirationDate.enteredInputTouched && 'error'
+   }
+
    if (firstName.nameInputIsValid) {
-      error.firstName = 'Enter your Firstname'
+      error.firstName = 'Enter your First Name'
    } else if (firstName.validateRejex) {
-      error.firstName = 'Firstname must not contain numbers'
+      error.firstName = 'First Name must not contain numbers'
    }
    if (lastName.nameInputIsValid) {
-      error.lastName = 'Enter your Lastname'
+      error.lastName = 'Enter your Last Name'
    } else if (lastName.validateRejex) {
-      error.lastName = 'LastName must not contain numbers'
+      error.lastName = 'Last Name must not contain numbers'
    }
    if (visaCard.nameInputIsValid) {
       error.visaCard = 'Enter your visaCard '
@@ -62,10 +73,10 @@ const Checkout = () => {
       error.visaCard = 'visaCard number must not be empty'
    }
 
-   if (CVC.nameInputIsValid) {
-      error.CVC = 'Enter your CVC '
-   } else if (CVC.validateRejex) {
-      error.CVV = 'CVC number must not be empty'
+   if (securityCode.nameInputIsValid) {
+      error.securityCode = 'Enter your CVC '
+   } else if (securityCode.validateRejex) {
+      error.securityCode = 'CVC number must not be empty'
    }
    if (ExpirationDate.nameInputIsValid) {
       error.ExpirationDate = 'Enter your ExpirationDate '
@@ -85,8 +96,8 @@ const Checkout = () => {
          ? 'form-control invalid'
          : 'form-control'
 
-   const CVCInputClasses =
-      CVC.nameInputIsValid || CVC.validateRejex
+   const securityCodeInputClasses =
+      securityCode.nameInputIsValid || securityCode.validateRejex
          ? 'form-control invalid'
          : 'form-control'
    const ExpirationDateInputClasses =
@@ -99,9 +110,10 @@ const Checkout = () => {
       firstName.onClear()
       lastName.onClear()
       visaCard.onClear()
-      CVC.onClear()
+      securityCode.onClear()
       ExpirationDate.onClear()
       setShowModal(true)
+      dispatch(clearCart())
    }
    const toggleSowHandler = () => {
       return navigate('/Home')
@@ -113,11 +125,11 @@ const Checkout = () => {
             <Modal onConfirm={toggleSowHandler} yes={toggleSowHandler} />
          )}
          <GlobalStyle />
-         <Container>
-            <form onSubmit={formSubmitHandler}>
-               <div className="control-group">
-                  <div className={firstNameInputClasses}>
-                     <span>
+         <DivBox>
+            <Container>
+               <form onSubmit={formSubmitHandler}>
+                  <div className="control-group">
+                     <Inputs className={firstNameInputClasses}>
                         <label htmlFor="Firstname">First Name</label>
                         <input
                            className="slide-up"
@@ -127,13 +139,12 @@ const Checkout = () => {
                            placeholder="First Name"
                            onBlur={firstName.onBlur}
                            onChange={firstName.onChange}
+                           required
                         />
-                        {error.firstName && <p>{error.firstName}</p>}
-                     </span>
-                  </div>
+                        {error.lastName && <Error>{error.firstName}</Error>}
+                     </Inputs>
 
-                  <div className={lastNameInputClasses}>
-                     <span>
+                     <Inputs className={lastNameInputClasses}>
                         <label htmlFor="Lastname">Last Name</label>
                         <input
                            placeholder="Last Name"
@@ -144,46 +155,74 @@ const Checkout = () => {
                            onBlur={lastName.onBlur}
                            onChange={lastName.onChange}
                         />
-                        {error.lastName && <p>{error.lastName}</p>}
-                     </span>
+
+                        {error.lastName && <Error>{error.lastName}</Error>}
+                     </Inputs>
                   </div>
-               </div>
-               <div className={visaCardInputClasses}>
-                  <span>
+                  <Inputs className={visaCardInputClasses}>
                      <label htmlFor="visaCard">Visa Card</label>
-                     <input
-                        maxLength="16"
+                     <InputMask
+                        mask={
+                           (/[1-9]/,
+                           /\d/,
+                           /\d/,
+                           /\d/,
+                           ' ',
+                           /\d/,
+                           /\d/,
+                           /\d/,
+                           /\d/,
+                           ' ',
+                           /\d/,
+                           /\d/,
+                           /\d/,
+                           /\d/,
+                           ' ',
+                           /\d/,
+                           /\d/,
+                           /\d/,
+                           /\d/)
+                        }
                         className="slide-up"
                         value={visaCard.values}
-                        type="number"
+                        maxLength="16"
                         id="visaCard"
+                        type="number"
                         onBlur={visaCard.onBlur}
                         onChange={visaCard.onChange}
                         placeholder="0000 0000 0000 0000"
                      />
-                     {error.visaCard && <p>{error.visaCard}</p>}
-                  </span>
-               </div>
+                     {error && error.visaCard && error.visaCard.length > 1 && (
+                        <Error>{error.visaCard}</Error>
+                     )}
+                  </Inputs>
 
-               <div className={CVCInputClasses}>
-                  <span>
+                  <Inputs className={securityCodeInputClasses}>
                      <label htmlFor="CVC">CVC</label>
-                     <input
+
+                     <InputMask
+                        mask={(/[0-9]/, /\d/, /\d/, /\d/)}
                         placeholder="000"
                         className="slide-up"
-                        value={CVC.values}
-                        type="number"
+                        value={securityCode.values}
                         id="CVC"
-                        onBlur={CVC.onBlur}
-                        onChange={CVC.onChange}
+                        maxLength="3"
+                        onBlur={securityCode.onBlur}
+                        onChange={securityCode.onChange}
+                        type="number"
                      />
-                     {error.CVC && <p>{error.CVC}</p>}
-                  </span>
-               </div>
-               <div className={ExpirationDateInputClasses}>
-                  <span>
+
+                     {error &&
+                        error.securityCode &&
+                        error.securityCode.length > 1 && (
+                           <Error>{error.securityCode}</Error>
+                        )}
+                  </Inputs>
+                  <Inputs className={ExpirationDateInputClasses}>
                      <label htmlFor="ExpirationDate">Expiration Date</label>
-                     <input
+                     <InputMask
+                        mask={(/[0-9]/, /\d/, '/', /\d/, /\d/)}
+                        maxLength="7"
                         placeholder="MM/YY"
                         className="slide-up"
                         value={ExpirationDate.values}
@@ -191,23 +230,43 @@ const Checkout = () => {
                         onBlur={ExpirationDate.onBlur}
                         onChange={ExpirationDate.onChange}
                      />
-                     {error.ExpirationDate && <p>{error.ExpirationDate}</p>}
-                  </span>
-               </div>
-               <div className="form-actions">
-                  <button type="submit" disabled={!formIsValid}>
-                     Submit
-                  </button>
-               </div>
-            </form>
-         </Container>
+                     {error &&
+                        error.ExpirationDate &&
+                        error.ExpirationDate.length > 1 && (
+                           <Error>{error.ExpirationDate}</Error>
+                        )}
+                  </Inputs>
+                  <div className="form-actions">
+                     <button type="submit" disabled={!formIsValid}>
+                        Submit
+                     </button>
+                  </div>
+               </form>
+            </Container>
+         </DivBox>
       </>
    )
 }
 
 export default Checkout
 
+const DivBox = styled.div`
+   position: absolute;
+   top: 50%;
+   left: 50%;
+   transform: translate(-50%, -50%);
+   width: 400px;
+   background: #fff;
+   padding: 40px;
+   border: 1px solid rgba(0, 0, 0, 0.1);
+   box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+`
+
 const Container = styled.div`
+   .slide-up::-webkit-outer-spin-button,
+   .slide-up::-webkit-inner-spin-button {
+      -webkit-appearance: none;
+   }
    .invalid input {
       border: 1px solid #b40e0e;
       background-color: #fddddd;
@@ -231,9 +290,24 @@ const Container = styled.div`
    padding: 30px;
    border-radius: 25px;
 
-   span {
-      position: relative;
-      display: inline-block;
-      margin: 10px 10px 10px 10px;
+   label {
+      font-family: 'Anek Odia', sans-serif;
+      font-family: 'Dancing Script', cursive;
+      font-family: 'Lora', serif;
+      font-family: 'Rubik', sans-serif;
+      font-family: 'Tapestry', cursive;
+   }
+`
+const Error = styled.span`
+   font-size: 13px;
+   font-weight: bold;
+   color: red;
+`
+const Inputs = styled.div`
+   height: 65px;
+   width: 90%;
+   input {
+      width: ${({ inputSize }) => (inputSize === 'small' ? '85%' : '100%')};
+      height: 30px;
    }
 `

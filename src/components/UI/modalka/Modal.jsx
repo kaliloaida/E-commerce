@@ -1,8 +1,9 @@
 import React from 'react'
 import styled from 'styled-components'
+import modalka from '../../../assets/modalka/modalka.gif'
 
 const Div = styled.div`
-   background-color: antiquewhite;
+   background-color: yellow;
    box-shadow: 0 2px 8px black;
    border-radius: 10px;
    align-items: center;
@@ -14,14 +15,29 @@ const Div = styled.div`
    z-index: 100;
    overflow: hidden;
    padding: 50px;
+   && img {
+      width: 300px;
+   }
 `
-const Button = styled.div`
-   align-items: center;
-   display: flex;
-   justify-content: center;
-   width: 200px;
-   margin: 20px 10px 20px 100px;
-   color: blueviolet;
+const Button = styled.button`
+   padding-top: 20px;
+   border-radius: 4px;
+   background: ${({ primary }) => (primary ? '#4B59F7' : '#0467FB')};
+   white-space: nowrap;
+   padding: ${({ big }) => (big ? '12px 64px' : '10px 20px')};
+   color: #fff;
+   font-size: ${({ fontBig }) => (fontBig ? '20px' : '16px')};
+   outline: none;
+   border: none;
+   cursor: pointer;
+   &:hover {
+      transition: all 0.3s ease-out;
+      background: #fff;
+      background-color: ${({ primary }) => (primary ? '#0467FB' : '#4B59F7')};
+   }
+   @media screen and (max-width: 960px) {
+      width: 100%;
+   }
 `
 const BackdropModal = styled.div`
    position: fixed;
@@ -37,11 +53,11 @@ const Modal = (props) => {
    return (
       <BackdropModal>
          <Div>
+            <img src={modalka} alt="" />
             <h1>Your purchase was successfully processed!</h1>
-            <Button>
-               <button type="button" onClick={props.yes}>
-                  OK
-               </button>
+            <br />
+            <Button type="button" onClick={props.yes}>
+               OK
             </Button>
          </Div>
       </BackdropModal>
